@@ -1,0 +1,10 @@
+<launch>
+
+	<node pkg="rover" type="ultrasonic_pub.py" name="ultrasonic_sensor"  />
+	
+	<node pkg="rover" type="algorithm_debug.py" name="algorithm"  />
+
+	<node pkg="rover" type="motors.py" name="motors"  />
+
+
+</launch>
