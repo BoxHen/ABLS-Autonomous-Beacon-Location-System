@@ -11,8 +11,8 @@ class beacon_finder:
 		self.Rover_latitude = 420880397
 		self.Rover_longitude = -759694612
 		#self.startup_time = time.time()
-		self.Beacon_latitude = 420889180
-		self.Beacon_longitude = -759697600
+		self.Beacon_latitude = 420938370
+		self.Beacon_longitude = -759576340
 
 		rospy.Subscriber('rover_gps', Int32MultiArray, self.get_rover_GPS, queue_size=1)
 		rospy.Subscriber('rover_heading', Float64, self.get_rover_heading, queue_size=1)
@@ -71,7 +71,7 @@ class beacon_finder:
 	
 		if(bearing<0):
 			bearing = bearing+360.0
-		if( (bearing-15) <self.Rover_heading< (bearing+15) ):
+		if( (bearing-25) <self.Rover_heading< (bearing+25) ):
 			return "FORWARD"
 		else:
 			return "LEFT"
