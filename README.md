@@ -28,4 +28,4 @@ Project Requirements
 	•	The System shall be durable enough to handle various terrains
 	
 Con-Op
-![ConOp](images/con-op-v1.png) 
+![ConOp](images/con-op-v1.JPG) 
