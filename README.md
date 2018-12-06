@@ -29,3 +29,11 @@ Project Requirements
 	
 Con-Op
 ![ConOp](images/con-op-v1.JPG) 
+
+Sponsoring Organization Name and Address
+
+	Sponsoring Organization Name:
+		Lockheed Martin Corporation
+		
+	Sponsoring Organization Address:
+		1801 State Route 17C, Owego, NY, 13827
