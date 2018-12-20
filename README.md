@@ -1,5 +1,7 @@
 # ABLS – Autonomous Beacon Location System - Watson Capstone Projects Lockheed Martin Corporation
 
+![ConOp](images/logo.JPG) 
+
 Project Description
 
 	This project will be centered around direction finding of a signaling beacon. This system will be an autonomous 
@@ -28,7 +30,10 @@ Project Requirements
 	•	The System shall be durable enough to handle various terrains
 	
 Con-Op
+
 ![ConOp](images/con-op-v1.JPG) 
+
+![ConOpV2](images/con-op-v2.JPG) 
 
 Sponsoring Organization Name and Address
 
