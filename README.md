@@ -1,6 +1,6 @@
-# ABLS – Autonomous Beacon Location System - Watson Capstone Projects Lockheed Martin Corporation
+﻿# ABLS – Autonomous Beacon Location System - Watson Capstone Projects Lockheed Martin Corporation
 
-![ConOp](images/logo.JPG) 
+![ConOp](images/logo/logo.JPG) 
 
 Project Description
 
