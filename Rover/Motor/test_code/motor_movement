@@ -2,41 +2,40 @@
 
 import serial
 import time
-import struct
+import convert
+import command
 
 ser = serial.Serial('/dev/ttyAMA0', 19200, timeout = 1)
 print(ser.name+ ' is open.')
 
 
 def forward(speed):
-	ser.write(chr(0xCA)) #right side 
-	ser.write(chr(speed)) 
-	ser.write(chr(0xC2)) #left side
-	ser.write(chr(speed))
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(speed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(speed))
 
 def backward(speed):
-	ser.write(chr(0xC9)) #right side
-	ser.write(chr(speed)) 
-	ser.write(chr(0xC1)) #left side
-	ser.write(chr(speed))
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BACKWARD))
+	ser.write(convert.to_unicode(speed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_BACKWARD))
+	ser.write(convert.to_unicode(speed))
 
 def left(speed):
-	ser.write(chr(0xCA)) #right side
-	ser.write(chr(speed)) 
-	ser.write(chr(0xC1)) #left side
-	ser.write(chr(speed))
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(speed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_BACKWARD))
+	ser.write(convert.to_unicode(speed))
 
 def right(speed):
-	ser.write(chr(0xC9)) #right side
-	ser.write(chr(speed)) 
-	ser.write(chr(0xC2)) #left side
-	ser.write(chr(speed))
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BACKWARD))
+	ser.write(convert.to_unicode(speed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(speed))
 
-msg = ser.read(10)
-print(msg)
-
-ser.write(chr(0xCB))
-ser.write(chr(0xC3))
+read_one_byte = 1
+msg_received = ser.read(read_one_byte)
+print(msg_received)
 
 
 ser.close()
