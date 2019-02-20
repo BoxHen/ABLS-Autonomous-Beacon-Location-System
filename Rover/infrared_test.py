@@ -7,7 +7,7 @@ IO.setmode (IO.BCM)
 IO.setup(2,IO.OUT) #GPIO 2 - LED as output
 IO.setup(14,IO.IN) #GPIO 14 - IR sensor input
 
-While 1:
+while 1:
 	if(IO.input(14)==True): #No object detected 
 		IO.output(2,False) #led OFF
 
