@@ -31,8 +31,6 @@ Project Requirements
 	
 Con-Op
 
-![ConOp](images/con-op-v1.JPG) 
-
 ![ConOpV2](images/con-op-v2.JPG) 
 
 Sponsoring Organization Name and Address
