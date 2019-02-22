@@ -8,7 +8,7 @@ IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
 IO.setup(2,IO.OUT) #GPIO 2 - LED as output
-IO.setup(18,IO.IN) #GPIO 14 - IR sensor input
+IO.setup(18,IO.IN) #GPIO 18 - IR sensor input
 
 while 1:
 	if(IO.input(18)==True): #No object detected 
