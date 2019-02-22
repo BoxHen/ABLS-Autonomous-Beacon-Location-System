@@ -8,7 +8,6 @@ import command
 ser = serial.Serial('/dev/ttyAMA0', 19200, timeout = 1)
 print(ser.name+ ' is open.')
 
-
 def forward(speed):
 	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
 	ser.write(convert.to_unicode(speed))
@@ -37,5 +36,4 @@ read_one_byte = 1
 msg_received = ser.read(read_one_byte)
 print(msg_received)
 
-
-ser.close()
+#ser.close()
