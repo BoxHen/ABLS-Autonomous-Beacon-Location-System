@@ -1,0 +1,11 @@
+# Right motor commands for TRex Motor
+RIGHT_MOTOR_BACKWARD = 0xC9
+RIGHT_MOTOR_FORWARD = 0xCA
+RIGHT_MOTOR_BRAKE = 0xC8
+
+# Left motor commands for TRex Motor
+LEFT_MOTOR_BACKWARD = 0xC1
+LEFT_MOTOR_FORWARD = 0xC2
+LEFT_MOTOR_BRAKE = 0xC0
+
+
