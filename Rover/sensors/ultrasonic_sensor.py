@@ -16,27 +16,26 @@ class Distance:
 		self.trigger_pulse = trigger_pulse
 		self.echo_pulse = echo_pulse
 		#setup GPIO in/out direction
-		GPIO.setup(Trigger_pulse, GPIO.OUT)
-		GPIO.setup(Echo_pulse, GPIO.IN)
-		
-		self.distance_from_obj()
+		GPIO.setup(trigger_pulse, GPIO.OUT)
+		GPIO.setup(echo_pulse, GPIO.IN)
 
-	def create_trigger_pulse():
-		GPIO.output(Trigger_pulse, True) 
+	def create_trigger_pulse(self):
+		GPIO.output(self.trigger_pulse, True) 
 		time.sleep(0.00001)
-		GPIO.output(Trigger_pulse, False)
+		GPIO.output(self.trigger_pulse, False)
 
-	def receive_echo_pulse():
-		while GPIO.input(Echo_pulse) == 0:
-			Start_time = time.time()
-		
-		Stop_time = time.time()	
+	def receive_echo_pulse(self):
+		while GPIO.input(self.echo_pulse) == 0:
+			self.Start_time = time.time()
 
-	def distance_from_obj():
-		create_trigger_pulse()
-		receive_echo_pulse()
-		Time_elapsed = Stop_time - Start_time
-		distance = (Time_elapsed * speed_of_sonic) / distance_there_and_back
+		while GPIO.input(self.echo_pulse) == 1:
+			self.Stop_time = time.time()	
+
+	def distance_from_obj(self):
+		self.create_trigger_pulse()
+		self.receive_echo_pulse()
+		Time_elapsed = self.Stop_time - self.Start_time
+		distance = (Time_elapsed * self.speed_of_sonic) / self.distance_there_and_back
 		return distance
 
 		
