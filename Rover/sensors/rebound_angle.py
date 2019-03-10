@@ -3,12 +3,9 @@
 import math
 import numpy as np
 import sensor_indexes
-
-class Rebound_angle:
-    def __init__():
-	
-        
-    def get_angle(data):
+#from sensor_indexes import create_sensor_indexes
+ 
+def get_angle(data):
 	rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 	number_of_sensors = 4
 	sensor_indexes = sensor_indexes.create_sensor_indexes(number_of_sensors)

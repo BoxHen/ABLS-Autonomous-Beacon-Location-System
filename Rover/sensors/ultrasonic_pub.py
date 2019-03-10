@@ -3,11 +3,13 @@
 import rospy
 import time
 from ultrasonic_sensor import Distance
+from ultrasonic_threshold import threshold_flag
 
 from std_msgs.msg import Bool 
 
 def ultrasonic_sensor():
-	pub = rospy.Publisher('isObstacle', Int16MultiArray, queue_size=10)
+	distance_pub = rospy.Publisher('isObstacle', Int16MultiArray, queue_size=10)
+	flag_pub = rospy.Publisher('isFlagSet', Bool, queue_size=10)
 	rospy.init_node('ultrasonic_sensor', anonymous = True) # Initializing the node
 
 	sensor_1 = Distance(2, 3)
@@ -24,9 +26,13 @@ def ultrasonic_sensor():
 		reading_3 = sensor_1.distance_from_obj()
 		reading_4 = sensor_1.distance_from_obj()
 		
+		threshold_flag = threshold_flag(reading_1, reading_2, reading_3, reading_4)
+
 		sensor_reading_array = Int16MultiArray()
 		sensor_reading_array.data = [reading_1, reading_2, reading_3, reading_4]
-		pub.publish(sensor_reading_array)
+
+		distance_pub.publish(sensor_reading_array)
+		flag_pub.publish(threshold_flag)
 		rate.sleep()
 
 if __name__ == '__main__':
