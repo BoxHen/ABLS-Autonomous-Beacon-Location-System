@@ -14,16 +14,18 @@ class Algorithm:
 	threshold_flag = false	
 
 	def __init__(self):
-		rospy.Subscriber("isObstacle", Int16MultiArray, self.get_angle)
-		rospy.Subscriber("isFlagSet", Bool, self.get_flag)
 		pub = rospy.Publisher('setMotor', Int16MultiArray, queue_size=10)
 
 		while not rospy.is_shutdown():
+			rospy.Subscriber("isObstacle", Int16MultiArray, self.get_angle)
+			rospy.Subscriber("isFlagSet", Bool, self.get_flag)
 			if threshold_flag == True:
 				pub.publish(rebound_angle)
 			elif threshold_flag == False:
 				pub.publish(go_forward)
 
+	def process_angle():
+	
 	def get_angle(data):
 		rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 		number_of_sensors = 4
