@@ -9,7 +9,7 @@ from std_msgs.msg import Bool
 
 def ultrasonic_sensor():
 	distance_pub = rospy.Publisher('isObstacle', Int16MultiArray, queue_size=10)
-	flag_pub = rospy.Publisher('isFlagSet', Bool, queue_size=10)
+	flag_pub = rospy.Publisher('isFlagSet', Int, queue_size=10)
 	rospy.init_node('ultrasonic_sensor', anonymous = True) # Initializing the node
 
 	sensor_1 = Distance(2, 3)
