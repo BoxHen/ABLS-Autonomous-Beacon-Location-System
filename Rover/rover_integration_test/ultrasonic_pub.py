@@ -24,9 +24,9 @@ def ultrasonic_sensor():
 		rate = rospy.Rate(1)
 
 		reading_1 = sensor_1.distance_from_obj()
-		reading_2 = sensor_1.distance_from_obj()
-		reading_3 = sensor_1.distance_from_obj()
-		reading_4 = sensor_1.distance_from_obj()
+		reading_2 = sensor_2.distance_from_obj()
+		reading_3 = sensor_3.distance_from_obj()
+		reading_4 = sensor_4.distance_from_obj()
 		
 		threshold_flag = get_threshold_flag(reading_1, reading_2, reading_3, reading_4)
 
