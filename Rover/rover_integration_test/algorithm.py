@@ -10,61 +10,64 @@ from std_msgs.msg import Int16
 
 class Algorithm:
 	def __init__(self):
-		heading = 0
-		go_forward = 0
-		rebound_angle_degrees = 0	
-		threshold_flag = 0	
+		self.heading = 0
+		self.rebound_angle_degrees = 0	
+		self.threshold_flag = 0	
 		
-		pub = rospy.Publisher('setMotor', String, queue_size=10)
+		pub = rospy.Publisher('setMotor', String, queue_size=2)
+
+		rospy.Subscriber('isObstacle', Int16MultiArray, self.get_angle)
+		rospy.Subscriber('isFlagSet', Int16, self.get_flag)
+		#rospy.Subscriber("getHeading", Int16, self.get_Heading)
 
 		while not rospy.is_shutdown():
-			rate = rospy.Rate(1)
-			rospy.Subscriber('isObstacle', Int16MultiArray, self.get_angle)
-			rospy.Subscriber('isFlagSet', Int16, self.get_flag)
-			#rospy.Subscriber("getHeading", Int16, self.get_Heading)
-			if threshold_flag == 2:
+			if self.threshold_flag == 2:
 				pub.publish("BACKWARD")
-			elif threshold_flag == 1:
-				pub.publish(process_angle(rebound_angle_degrees))
-			else:#threshold_flag == 0
+			elif self.threshold_flag == 1:
+				command = self.process_angle(self.rebound_angle_degrees)
+				print(command)
+				pub.publish(command)
+			elif self.threshold_flag == 0:
 				pub.publish("FORWARD")
 			rate.sleep()
 
 	#def find_beacon():
 		
 
-	def process_angle(self, rebound_angle_degrees):
-		if rebound_angle_degrees > 0:
-			return RIGHT
-		elif rebound_angle_degrees < 0:
-			return LEFT	
-		else:#rebound_angle_degrees == 0
-			return FORWARD
+	def process_angle(self, angle_in_degrees):
+		print("get_angle: ", angle_in_degrees)
+		if angle_in_degrees > 0:
+			return "RIGHT"
+		elif angle_in_degrees < 0:
+			return "LEFT"	
+		else:#angle_in_degrees == 0
+			return "FORWARD"
 
 	def get_angle(self, data):
 		rospy.loginfo(rospy.get_caller_id() + "I heard ANGLE: %s", data.data)
 		number_of_sensors = 4
 		sensor_indexes = create_sensor_indexes(number_of_sensors)
-		print(sensor_indexes)
 		sensor_interval = math.pi/number_of_sensors
 
 		sensor_weight = np.dot(sensor_interval, sensor_indexes)
 
 		rebound_angle_radians = (np.dot(sensor_weight, data.data))/(np.sum(data.data))
-		rebound_angle_degrees = np.rad2deg(rebound_angle_radians)
+		self.rebound_angle_degrees = np.rad2deg(rebound_angle_radians)
+		print(self.rebound_angle_degrees)
 		
 	def get_flag(self, data):
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", data.data)
-		threshold_flag = data.data
+		self.threshold_flag = data.data
 
 	#def get_Heading(self, data):
 	#	rospy.loginfo(rospy.get_caller_id() + "I heard GPS: %s", data.data)
-	#	heading = data.data
+	#	self.heading = data.data
 
 
 if __name__ == '__main__':
-    rospy.init_node('algorithm', anonymous=True)
-    try:
-        algorithm = Algorithm()
-    except rospy.ROSInterruptException:  
-	pass
+	rospy.init_node('algorithm', anonymous=True)
+	rate = rospy.Rate(1)
+ 	try:
+		algorithm = Algorithm()
+	except rospy.ROSInterruptException:  
+		pass
