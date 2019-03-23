@@ -20,6 +20,7 @@ class Distance:
 		GPIO.setup(echo_pulse, GPIO.IN)
 		self.Start_time = time.time()
 		self.Stop_time = time.time()
+		self.max_wait_time = 0
 		self.time_delta = 0
 
 	def create_trigger_pulse(self):
@@ -28,9 +29,12 @@ class Distance:
 		GPIO.output(self.trigger_pulse, False)
 
 	def receive_echo_pulse(self):
+		self.max_wait_time = 0
 		self.Start_time = time.time()
-		while (GPIO.input(self.echo_pulse) == 0  ):
+		start_loop_time = time.time() # time at which this loop started
+		while ((GPIO.input(self.echo_pulse) == 0) and (self.max_wait_time < 0.009)):
 			self.Start_time = time.time()
+			self.max_wait_time = self.Start_time - start_loop_time 
 
 		self.time_delta = 0
 		while ((GPIO.input(self.echo_pulse) == 1) and (self.time_delta < 0.004)):
@@ -40,7 +44,6 @@ class Distance:
 	def distance_from_obj(self):
 		self.create_trigger_pulse()
 		self.receive_echo_pulse()
-		#Time_elapsed = self.Stop_time - self.Start_time
 		distance = (self.time_delta * self.speed_of_sonic) / self.distance_there_and_back
 		return distance
 
