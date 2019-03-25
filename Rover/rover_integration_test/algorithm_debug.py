@@ -24,11 +24,11 @@ def callback():
 	rospy.init_node('algorithm', anonymous=True)
 	pub = rospy.Publisher('setMotor', String, queue_size=1)
 
-	rospy.Subscriber('isObstacle', Int16MultiArray, get_angle)
-	rospy.Subscriber('isFlagSet', Int16, get_flag)
+	rospy.Subscriber('isObstacle', Int16MultiArray, get_angle, queue_size=1)
+	rospy.Subscriber('isFlagSet', Int16, get_flag, queue_size=1)
 	#rospy.Subscriber("getHeading", Int16, get_Heading)
 
-	rate = rospy.Rate(1)
+	rate = rospy.Rate(10)
 	while not rospy.is_shutdown():
 		if threshold_flag == 2:
 			pub.publish("BACKWARD")

@@ -19,7 +19,7 @@ def ultrasonic_sensor():
 	sensor_3 = Distance(27, 22)
 	sensor_4 = Distance(10, 9)
 
-	rate = rospy.Rate(1)
+	rate = rospy.Rate(10)
 	while not rospy.is_shutdown():
 		reading_1 = sensor_1.distance_from_obj()
 		reading_2 = sensor_2.distance_from_obj()

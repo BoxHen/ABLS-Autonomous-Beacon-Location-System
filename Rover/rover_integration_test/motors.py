@@ -14,19 +14,19 @@ def move_rover(data):
 	if rover_action == "RIGHT":    
 		print("in right")
 		motor_move.right(speed)
-		time.sleep(2)
+
 	elif rover_action == "LEFT":  
 		print("in left")
 		motor_move.left(speed)
-		time.sleep(2)
+
 	elif rover_action == "FORWARD": 	
 		print("in forward")
 		motor_move.forward(speed)
-		time.sleep(2)
+
 	else:#rover_action == "BACKWARD"   	
 		print("in back")
 		motor_move.backward(speed)
-		time.sleep(2)
+
 
 def listener():
 	rospy.init_node('motor', anonymous=True)
