@@ -7,7 +7,7 @@ import motor_move
 from std_msgs.msg import String
 
 def move_rover(data):
-	speed = 40
+	speed = 30
 	rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 	rover_action = data.data
 
@@ -30,11 +30,9 @@ def move_rover(data):
 
 def listener():
 	rospy.init_node('motor', anonymous=True)
-	rate = rospy.Rate(2)
 	
-	#while not rospy.is_shutdown():
-	rospy.Subscriber("setMotor", String, move_rover)
-	rate.sleep()
+	rospy.Subscriber('setMotor', String, move_rover, queue_size=1)
+
 	rospy.spin()
 
 if __name__ == '__main__':
