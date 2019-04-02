@@ -32,6 +32,18 @@ def right(speed):
 	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
 	ser.write(convert.to_unicode(speed))
 
+def forwardSteerLeft(fasterSpeed, slowerSpeed):
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(fasterSpeed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(slowerSpeed))
+
+def forwardSteerRight(fasterSpeed, slowerSpeed):
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(slowerSpeed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(fasterSpeed))
+
 read_one_byte = 1
 msg_received = ser.read(read_one_byte)
 print(msg_received)
