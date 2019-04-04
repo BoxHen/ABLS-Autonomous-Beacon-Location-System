@@ -33,16 +33,17 @@ class Algorithm:
 
 		rate = rospy.Rate(1)
 		while not rospy.is_shutdown():
+			check_beacon_location() #breaks from loop if we are at the beacon
 			if self.threshold_flag == 2:
-				pub.publish("BACKWARD")
+				self.pub.publish("BACKWARD")
 			elif self.threshold_flag == 1:
 				command = self.process_angle(self.rebound_angle_degrees)
 				print(command)
-				pub.publish(command)
+				self.pub.publish(command)
 			elif self.threshold_flag == 0:
 				calibrate_heading() #maybe find a better way to implement this
-				beacon_direction = find_beacon()
-				pub.publish(beacon_direction)
+				beacon_direction = find_beacon_direction()
+				self.pub.publish(beacon_direction)
 			rate.sleep()
 
 	def get_angle(self, data):
@@ -95,8 +96,8 @@ class Algorithm:
 
 	def find_bearing(self):
 		latRover = math.radians(self.Rover_latitude)
-		latBeacon = math.radians(self.Rover_latitude)
-		longRover = math.radians(self.Beacon_longitude)
+		latBeacon = math.radians(self.Beacon_latitude)
+		longRover = math.radians(self.Rover_longitude)
 		longBeacon = math.radians(self.Beacon_longitude)
 
 		X = (math.cos(latBeacon)) * (math.sin(longBeacon-longRover))
@@ -107,7 +108,7 @@ class Algorithm:
 		print(Bearing)
 		return Bearing
 
-	def find_beacon(self):
+	def find_beacon_direction(self):
 		bearing = find_bearing()
 		if ((self.Rover_heading-bearing)>21):
 			return "LEFT" #forwardSteerLeft
@@ -116,7 +117,15 @@ class Algorithm:
 		else: #between -21 and 21
 			return "FORWARD"
 
-
+	def check_beacon_location(self):
+		tolerance = 20
+		lat_check = Rover_latitude + tolerance < Beacon_latitude < Rover_latitude + tolerance
+		long_check = Rover_longitude + tolerance < Beacon_longitude < Rover_longitude + tolerance
+		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop rover
+			self.pub.publish("STOP")
+			break
+			
+		
 if __name__ == '__main__':
 	rospy.init_node('algorithm', anonymous=True)
  	try:
