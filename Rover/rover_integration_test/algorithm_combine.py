@@ -40,7 +40,7 @@ class Algorithm:
 				print(command)
 				pub.publish(command)
 			elif self.threshold_flag == 0:
-				calibrate_heading()
+				calibrate_heading() #maybe find a better way to implement this
 				beacon_direction = find_beacon()
 				pub.publish(beacon_direction)
 			rate.sleep()
@@ -108,10 +108,10 @@ class Algorithm:
 		return Bearing
 
 	def find_beacon(self):
-		beacon_direction = find_bearing()
-		if ((self.Rover_heading-beacon_direction)>21):
+		bearing = find_bearing()
+		if ((self.Rover_heading-bearing)>21):
 			return "LEFT" #forwardSteerLeft
-		if ((self.Rover_heading-beacon_direction)<-21):
+		if ((self.Rover_heading-bearing)<-21):
 			return "RIGHT" #forwardSteerRight
 		else: #between -21 and 21
 			return "FORWARD"
