@@ -43,6 +43,7 @@ def forwardSteerRight(fasterSpeed, slowerSpeed):
 	ser.write(convert.to_unicode(slowerSpeed))
 	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
 	ser.write(convert.to_unicode(fasterSpeed))
+#STOP can be implemented by setting any of these function's speed to 0
 
 read_one_byte = 1
 msg_received = ser.read(read_one_byte)

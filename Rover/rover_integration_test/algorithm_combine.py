@@ -121,7 +121,7 @@ class Algorithm:
 		tolerance = 20
 		lat_check = Rover_latitude + tolerance < Beacon_latitude < Rover_latitude + tolerance
 		long_check = Rover_longitude + tolerance < Beacon_longitude < Rover_longitude + tolerance
-		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop rover
+		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop the rover
 			self.pub.publish("STOP")
 			break
 			
