@@ -15,4 +15,5 @@ print(Y)
 
 Bearing = math.degrees(math.atan2(X, Y))
 print(Bearing)
+return Bearing
 

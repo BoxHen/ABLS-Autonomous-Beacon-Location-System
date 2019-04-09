@@ -15,6 +15,8 @@ def create_sensor_indexes(number_of_sensors):
 			sensor_index +=1
 			continue
 		else:
-			indexes[arr_index] = sensor_index
+			array_of_sensor_indexes[arr_index] = sensor_index
 			arr_index += 1
 			sensor_index +=1
+
+	return array_of_sensor_indexes

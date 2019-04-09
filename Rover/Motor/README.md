@@ -1,5 +1,9 @@
 ﻿# Motor Folder
 
+motors.py
+	python file that subscribes to the commands from the algorithm and has the motors behave 	accordingly
+
+import folder - files called upon by motors.py
 command.py
 	contains the right and left motor commands for TRex Motor
 
