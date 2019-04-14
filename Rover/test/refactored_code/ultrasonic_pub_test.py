@@ -29,11 +29,10 @@ class ultrasonics_on_rover():
 
     def get_distance(self):
         for i in range(self.number_of_sensors):
-            self.distance.data.append(sensors[i].distance_from_obj())
+            self.distances.data.append(sensors[i].distance_from_obj())
 
     def check_sensor_boundaries(self):
-        self.threshold_flag = get_threshold_flag()
-        #FIX!!!
+        self.threshold_flag = get_threshold_flag(self.distances.data)
 
     def run_sensors(self):
         create_sensors()

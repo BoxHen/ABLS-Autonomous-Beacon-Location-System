@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-def get_threshold_flag(*argv):
+def get_threshold_flag(argv):
 	threshold = 30
 	all_sensor_blocked = True #identity for AND 
 	at_least_one_sensor_blocked = False #identity for OR

@@ -1,4 +1,4 @@
-def get_threshold_flag(*argv):
+def get_threshold_flag(argv):
   threshold = 30
   threshold_flag = 0
   all_sensor_blocked = True #identity for AND 
