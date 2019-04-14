@@ -6,6 +6,7 @@ import numpy as np
 #import sensor_indexes
 from sensor_indexes import create_sensor_indexes
 from std_msgs.msg import Int16MultiArray
+from std_msgs.msg import Int8MultiArray
 from std_msgs.msg import String
 from std_msgs.msg import Int16
 
@@ -18,7 +19,6 @@ class Algorithm:
 
 		self.Rover_longitude = 0
 		self.Rover_latitude = 0
-		self.Rover_altitude = 0
 		self.Rover_heading = 0
 		self.Beacon_longitude = 0
 		self.Beacon_latitude = 0
@@ -26,7 +26,7 @@ class Algorithm:
 		
 		self.pub = rospy.Publisher('setMotor', String, queue_size=2)
 	
-		rospy.Subscriber('RoverGPS', Int16MultiArray, get_rover_GPS, queue_size=1)
+		rospy.Subscriber('rover_gps', Int32MultiArray, get_rover_GPS, queue_size=1)
 		rospy.Subscriber('BeaconGPS', Int16MultiArray, get_beacon_GPS, queue_size=1)
 		rospy.Subscriber('isObstacle', Int16MultiArray, self.get_angle, queue_size=1)
 		rospy.Subscriber('isFlagSet', Int16, self.get_flag, queue_size=1)
@@ -63,20 +63,15 @@ class Algorithm:
 		self.threshold_flag = data.data
 
 	def get_rover_GPS(self, RoverGPSArray):
-		# unpack data from array
-		#-----------------------
 		self.Rover_longitude = RoverGPSArray.data[0]
 		self.Rover_latitude = RoverGPSArray.data[1]
-		self.Rover_altitude = RoverGPSArray.data[2]
-		self.Rover_heading = RoverGPSArray.data[3]
-		#...
+		self.Rover_heading = RoverGPSArray.data[2]
 
 	def get_beacon_GPS(self, BeaconGPSArray):
 		
 		self.Beacon_longitude = BeaconGPSArray.data[0]
 		self.Beacon_latitude = BeaconGPSArray.data[1]
 		self.Beacon_altitude = BeaconGPSArray.data[2]
-		#...
 
 	def calibrate_heading(): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
