@@ -26,14 +26,14 @@ class Algorithm:
 		
 		self.pub = rospy.Publisher('setMotor', String, queue_size=2)
 	
-		rospy.Subscriber('rover_gps', Int32MultiArray, get_rover_GPS, queue_size=1)
-		rospy.Subscriber('BeaconGPS', Int16MultiArray, get_beacon_GPS, queue_size=1)
+		rospy.Subscriber('rover_gps', Int32MultiArray, self.get_rover_GPS, queue_size=1)
+		rospy.Subscriber('BeaconGPS', Int16MultiArray, self.get_beacon_GPS, queue_size=1)
 		rospy.Subscriber('isObstacle', Int16MultiArray, self.get_angle, queue_size=1)
 		rospy.Subscriber('isFlagSet', Int16, self.get_flag, queue_size=1)
 
 		rate = rospy.Rate(1)
 		while not rospy.is_shutdown():
-			check_beacon_location() #breaks from loop if we are at the beacon
+			self.check_beacon_location() #breaks from loop if we are at the beacon
 			if self.threshold_flag == 2:
 				self.pub.publish("BACKWARD")
 			elif self.threshold_flag == 1:
@@ -41,8 +41,8 @@ class Algorithm:
 				print(command)
 				self.pub.publish(command)
 			elif self.threshold_flag == 0:
-				calibrate_heading() #maybe find a better way to implement this
-				beacon_direction = find_beacon_direction()
+				self.calibrate_heading() #maybe find a better way to implement this
+				beacon_direction = self.find_beacon_direction()
 				self.pub.publish(beacon_direction)
 			rate.sleep()
 
@@ -75,7 +75,7 @@ class Algorithm:
 
 	def calibrate_heading(): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
-		if (current_time - startup_time < 15)
+		if (current_time - self.startup_time < 15)
 			self.pub.publish("FORWARD")
 			continue
 		
@@ -104,7 +104,7 @@ class Algorithm:
 		return Bearing
 
 	def find_beacon_direction(self):
-		bearing = find_bearing()
+		bearing = self.find_bearing()
 		if ((self.Rover_heading-bearing)>21):
 			return "LEFT" #forwardSteerLeft
 		if ((self.Rover_heading-bearing)<-21):
@@ -114,8 +114,8 @@ class Algorithm:
 
 	def check_beacon_location(self):
 		tolerance = 20
-		lat_check = Rover_latitude + tolerance < Beacon_latitude < Rover_latitude + tolerance
-		long_check = Rover_longitude + tolerance < Beacon_longitude < Rover_longitude + tolerance
+		lat_check = self.Rover_latitude + tolerance < self.Beacon_latitude < self.Rover_latitude + tolerance
+		long_check = self.Rover_longitude + tolerance < self.Beacon_longitude < self.Rover_longitude + tolerance
 		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop the rover
 			self.pub.publish("STOP")
 			break
