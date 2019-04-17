@@ -6,7 +6,7 @@ import numpy as np
 #import sensor_indexes
 from sensor_indexes import create_sensor_indexes
 from std_msgs.msg import Int16MultiArray
-from std_msgs.msg import Int8MultiArray
+from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import String
 from std_msgs.msg import Int16
 
@@ -33,7 +33,8 @@ class Algorithm:
 
 		rate = rospy.Rate(1)
 		while not rospy.is_shutdown():
-			self.check_beacon_location() #breaks from loop if we are at the beacon
+			if (self.check_beacon_location()): #breaks from loop if we are at the beacon
+				break
 			if self.threshold_flag == 2:
 				self.pub.publish("BACKWARD")
 			elif self.threshold_flag == 1:
@@ -41,7 +42,8 @@ class Algorithm:
 				print(command)
 				self.pub.publish(command)
 			elif self.threshold_flag == 0:
-				self.calibrate_heading() #maybe find a better way to implement this
+				if (self.calibrate_heading()): #maybe find a better way to implement this
+					continue
 				beacon_direction = self.find_beacon_direction()
 				self.pub.publish(beacon_direction)
 			rate.sleep()
@@ -75,10 +77,11 @@ class Algorithm:
 
 	def calibrate_heading(): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
+		is_calibrated = False
 		if (current_time - self.startup_time < 15)
 			self.pub.publish("FORWARD")
-			continue
-		
+			is_calibrated = True
+		return is_calibrated
 
 	def process_angle(self, angle_in_degrees):
 		print("get_angle: ", angle_in_degrees)
@@ -113,13 +116,14 @@ class Algorithm:
 			return "FORWARD"
 
 	def check_beacon_location(self):
+		has_arrived = False
 		tolerance = 20
 		lat_check = self.Rover_latitude + tolerance < self.Beacon_latitude < self.Rover_latitude + tolerance
 		long_check = self.Rover_longitude + tolerance < self.Beacon_longitude < self.Rover_longitude + tolerance
 		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop the rover
 			self.pub.publish("STOP")
-			break
-			
+			has_arrived = True
+		return has_arrived
 		
 if __name__ == '__main__':
 	rospy.init_node('algorithm', anonymous=True)
