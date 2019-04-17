@@ -29,11 +29,11 @@ def move_rover(data):
 		print("in back")
 		motor_move.backward(speed)
 
-	elif rover_action == "forwardSteerLeft"
+	elif rover_action == "forwardSteerLeft":
 		print("in forwardSteerLeft")
 		motor_move.forwardSteerLeft(faster_speed, speed)
 
-	elif rover_action == "forwardSteerRight"
+	elif rover_action == "forwardSteerRight":
 		print("in forwardSteerRight")
 		motor_move.forwardSteerRight(faster_speed, speed)
 
@@ -47,4 +47,7 @@ def listener():
 	rospy.spin()
 
 if __name__ == '__main__':
-	listener()
+ 	try:
+		listener()
+	except KeyboardInterrupt:  
+		motor_move.forward(0)

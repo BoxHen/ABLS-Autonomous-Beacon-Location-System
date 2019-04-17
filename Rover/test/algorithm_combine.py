@@ -131,3 +131,4 @@ if __name__ == '__main__':
 		algorithm = Algorithm()
 	except rospy.ROSInterruptException:  
 		pass
+		
