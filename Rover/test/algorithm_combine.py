@@ -78,7 +78,7 @@ class Algorithm:
 	def calibrate_heading(): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
 		is_calibrated = False
-		if (current_time - self.startup_time < 15)
+		if (current_time - self.startup_time < 15):
 			self.pub.publish("FORWARD")
 			is_calibrated = True
 		return is_calibrated
