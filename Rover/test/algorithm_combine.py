@@ -27,7 +27,7 @@ class Algorithm:
 		self.pub = rospy.Publisher('setMotor', String, queue_size=2)
 	
 		rospy.Subscriber('rover_gps', Int32MultiArray, self.get_rover_GPS, queue_size=1)
-		rospy.Subscriber('BeaconGPS', Int16MultiArray, self.get_beacon_GPS, queue_size=1)
+		rospy.Subscriber('beacon_gps', Int32MultiArray, self.get_beacon_GPS, queue_size=1)
 		rospy.Subscriber('isObstacle', Int16MultiArray, self.get_angle, queue_size=1)
 		rospy.Subscriber('isFlagSet', Int16, self.get_flag, queue_size=1)
 
