@@ -29,11 +29,20 @@ int get_coordinates(int argc, char *argv[]) {
      while(1) {
       if (mySwitch.available()) {
         int value = mySwitch.getReceivedValue();
+	int lon; int lat;
         if (value == 0) {
           printf("Unknown encoding\n");
-        } else {    
-          printf("Received %i\n", mySwitch.getReceivedValue() );
-          return mySwitch.getReceivedValue()
+        } else {
+	  if(value < 500000){
+	    lat = value + 42000000;
+	    printf("Lat is %i\n",lat);
+	    return lat;
+	  }
+	  else {lon = -1 * value - 75000000;
+	    printf("Lon is %i", lon);
+	    return lon;
+	  }
+	  
         }
         fflush(stdout);
         mySwitch.resetAvailable();
