@@ -9,6 +9,7 @@ from std_msgs.msg import Int16MultiArray
 from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import String
 from std_msgs.msg import Int16
+from std_msgs.msg import Bool
 
 class Algorithm:
 	def __init__(self):
@@ -22,6 +23,8 @@ class Algorithm:
 		self.Rover_heading = 0
 		self.Beacon_longitude = -759688110
 		self.Beacon_latitude = 420885400
+		self.arming_flag = False
+		self.manual_command
 		
 		self.pub = rospy.Publisher('setMotor', String, queue_size=2)
 	
@@ -29,22 +32,28 @@ class Algorithm:
 		#rospy.Subscriber('beacon_gps', Int32MultiArray, self.get_beacon_GPS, queue_size=1)
 		rospy.Subscriber('isObstacle', Int16MultiArray, self.get_angle, queue_size=1)
 		rospy.Subscriber('isFlagSet', Int16, self.get_flag, queue_size=1)
+		rospy.Subscriber('armingMessage', Bool, self.get_armingMessage, queue_size=1)
+		rospy.Subscriber('manualCtrl', String, self.get_manualCtrl, queue_size=1)
 
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():
-			if (self.check_beacon_location()): #breaks from loop if we are at the beacon
-				break
-			if self.threshold_flag == 2:
-				self.pub.publish("BACKWARD")
-			elif self.threshold_flag == 1:
-				command = self.process_angle(self.rebound_angle_degrees)
-				print(command)
-				self.pub.publish(command)
-			elif self.threshold_flag == 0:
-				if (self.calibrate_heading()): #maybe find a better way to implement this
-					continue
-				beacon_direction = self.find_beacon_direction()
+			if (self.arming_flag == True):
+				command = process_manual_ctrl()
 				self.pub.publish(beacon_direction)
+			else:
+				if (self.check_beacon_location()): #breaks from loop if we are at the beacon
+					break
+				if self.threshold_flag == 2:
+					self.pub.publish("BACKWARD")
+				elif self.threshold_flag == 1:
+					command = self.process_angle(self.rebound_angle_degrees)
+					print(command)
+					self.pub.publish(command)
+				elif self.threshold_flag == 0:
+					if (self.calibrate_heading()): #maybe find a better way to implement this
+						continue
+					beacon_direction = self.find_beacon_direction()
+					self.pub.publish(beacon_direction)
 			rate.sleep()
 
 	def get_angle(self, data):
@@ -68,6 +77,14 @@ class Algorithm:
 		self.Rover_latitude = RoverGPSArray.data[1]
 		self.Rover_heading = RoverGPSArray.data[2]
 
+	def get_armingMessage(self, arming_flag):
+		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", arming_flag.data)
+		arming_flag = arming_flag.data
+
+	def get_manualCtrl(self, manual_command):
+		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", manual_command.data)
+		manual_command = manual_command.data
+
 	#def get_beacon_GPS(self, BeaconGPSArray):
 		#self.Beacon_longitude = BeaconGPSArray.data[0]
 		#self.Beacon_latitude = BeaconGPSArray.data[1]
@@ -89,6 +106,18 @@ class Algorithm:
 			return "LEFT"	
 		else:#angle_in_degrees == 0
 			return "FORWARD"
+
+	def process_manual_ctrl(self):
+		command = "FORWARD"
+		if (self.manual_command = "LEFT"):
+			command = "LEFT"
+		elif (self.manual_command = "RIGHT"):
+			command = "RIGHT"
+		elif (self.manual_command = "FORWARD"):
+			command = "FORWARD"
+		else: #self.manual_command = "BACKWARD"
+			command = "BACKWARD"
+		return command
 
 	def find_bearing(self):
 		latRover = math.radians(self.Rover_latitude/10000000)

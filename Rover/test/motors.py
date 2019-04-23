@@ -46,8 +46,13 @@ def listener():
 	rospy.Subscriber('setMotor', String, move_rover, queue_size=1)
 	rospy.spin()
 
+def stop():
+	print("motors stopped")
+	motor_move.forward(stop)
+
 if __name__ == '__main__':
  	try:
 		listener()
+		rospy.on_shutdown(stop)
 	except KeyboardInterrupt:  
 		motor_move.forward(0)
