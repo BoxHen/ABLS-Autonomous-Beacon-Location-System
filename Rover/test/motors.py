@@ -8,7 +8,7 @@ from std_msgs.msg import String
 
 def move_rover(data):
 	stop = 0
-	speed = 30
+	speed = 45
 	faster_speed = 40
 	rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 	rover_action = data.data
@@ -48,11 +48,11 @@ def listener():
 
 def stop():
 	print("motors stopped")
-	motor_move.forward(stop)
+	motor_move.forward(0)
 
 if __name__ == '__main__':
  	try:
 		listener()
 		rospy.on_shutdown(stop)
 	except KeyboardInterrupt:  
-		motor_move.forward(0)
+		pass
