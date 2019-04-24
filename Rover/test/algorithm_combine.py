@@ -5,6 +5,7 @@ import rospy
 import numpy as np
 #import sensor_indexes
 from sensor_indexes import create_sensor_indexes
+from std_msgs.msg import Int8MultiArray
 from std_msgs.msg import Int16MultiArray
 from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import String
@@ -24,9 +25,11 @@ class Algorithm:
 		self.Beacon_longitude = -759688110
 		self.Beacon_latitude = 420885400
 		self.arming_flag = False
-		self.manual_command
+		self.manual_command = "FORWARD"
+		#self.vehicle_status_array = Int16MultiArray()
 		
 		self.pub = rospy.Publisher('setMotor', String, queue_size=2)
+		self.confirm_flag_pub = rospy.Publisher('vehicle_status', Int8MultiArray, queue_size=1)
 	
 		rospy.Subscriber('rover_gps', Int32MultiArray, self.get_rover_GPS, queue_size=1)
 		#rospy.Subscriber('beacon_gps', Int32MultiArray, self.get_beacon_GPS, queue_size=1)
@@ -38,8 +41,8 @@ class Algorithm:
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():
 			if (self.arming_flag == True):
-				command = process_manual_ctrl()
-				self.pub.publish(beacon_direction)
+				command = self.process_manual_ctrl()
+				self.pub.publish(command)
 			else:
 				if (self.check_beacon_location()): #breaks from loop if we are at the beacon
 					break
@@ -79,11 +82,15 @@ class Algorithm:
 
 	def get_armingMessage(self, arming_flag):
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", arming_flag.data)
-		arming_flag = arming_flag.data
+		self.arming_flag = arming_flag.data
+		
+		vehicle_status_array = Int16MultiArray()
+		vehicle_status_array.data = [0]
+		self.confirm_flag_pub.publish(vehicle_status_array.data)
 
-	def get_manualCtrl(self, manual_command):
-		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", manual_command.data)
-		manual_command = manual_command.data
+	def get_manualCtrl(self, data):
+		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", data.data)
+		self.manual_command = data.data
 
 	#def get_beacon_GPS(self, BeaconGPSArray):
 		#self.Beacon_longitude = BeaconGPSArray.data[0]
@@ -109,14 +116,16 @@ class Algorithm:
 
 	def process_manual_ctrl(self):
 		command = "FORWARD"
-		if (self.manual_command = "LEFT"):
+		if (self.manual_command == "LEFT"):
 			command = "LEFT"
-		elif (self.manual_command = "RIGHT"):
+		elif (self.manual_command ==  "RIGHT"):
 			command = "RIGHT"
-		elif (self.manual_command = "FORWARD"):
+		elif (self.manual_command == "FORWARD"):
 			command = "FORWARD"
-		else: #self.manual_command = "BACKWARD"
+		elif (self.manual_command == "BACKWARD"):
 			command = "BACKWARD"
+		else: #STOP
+			command = "STOP"
 		return command
 
 	def find_bearing(self):
