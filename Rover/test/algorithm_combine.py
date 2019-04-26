@@ -3,7 +3,6 @@ import math
 import time
 import rospy
 import numpy as np
-#import sensor_indexes
 from sensor_indexes import create_sensor_indexes
 from std_msgs.msg import Int8MultiArray
 from std_msgs.msg import Int16MultiArray

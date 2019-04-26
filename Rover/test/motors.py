@@ -9,17 +9,17 @@ from std_msgs.msg import String
 def move_rover(data):
 	stop = 0
 	speed = 45
-	faster_speed = 40
+	faster_speed = 55
 	rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 	rover_action = data.data
 
 	if rover_action == "RIGHT":    
 		print("in right")
-		motor_move.right(speed)
+		motor_move.right(faster_speed)
 
 	elif rover_action == "LEFT":  
 		print("in left")
-		motor_move.left(speed)
+		motor_move.left(faster_speed)
 
 	elif rover_action == "FORWARD": 	
 		print("in forward")
