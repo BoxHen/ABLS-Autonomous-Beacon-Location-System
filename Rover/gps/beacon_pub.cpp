@@ -6,10 +6,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <iostream>
+
+using namespace std;
 
 RCSwitch mySwitch;
 
-int* get_coordinates(int argc, char *argv[]) {
+vector<int> get_coordinates(int argc, char *argv[]) {
 	int lon;
 	int lat;
 	int PIN = 29;
@@ -49,44 +52,34 @@ int* get_coordinates(int argc, char *argv[]) {
 	}
 	coordinate_arr.push_back(lat);
 	coordinate_arr.push_back(lon);
-	return coordinate_arr
-	exit(0);
+	return coordinate_arr;
 }
 
-int process_coordinates(int argc, char *argv[]) {
-  coordinates = get_coordinates(argc, argv)
-  /*
-  ADD proccessing
-  lat = 
-  lon = 
-  */
+int main(int argc, char **argv){
+	ros::init(argc, argv, "beacon_publisher");
+	ros::NodeHandle nh;
+	ros::Publisher beacon_pub = nh.advertise<std_msgs::Int32MultiArray>("beacon_gps", 100);
 
-int main(int argc, char **argv, ){
-  ros::init(argc, argv, "beacon_publisher");
-  ros::NodeHandle nh;
-  ros::Publisher beacon_pub = nh.advertise<std_msgs::String>("beacon_gps", 100);
+	ros::Rate loop_rate(1);
 
-  ros::Rate loop_rate(1);
+	while (ros::ok()){
+		std_msgs::Int32MultiArray beacon_msg;
 
-  while (ros::ok()){
-    lat = 0
-    lon = 1
-    std_msgs::Int32MultiArray beacon_msg;
+		coordinates_arr = get_coordinates(argc, argv)
+	
+		int lat = 0;
+		int lon = 1;
 
-    coordinates_arr = process_coordinates(argc, argv)
+		beacon_msg.data.clear();
+		beacon_msg.data.push_back(coordinates_arr[lat]);
+		beacon_msg.data.push_back(coordinates_arr[lon]);
 
-    beacon_msg.data.clear();
-    beacon_msg.data.push_back(coordinates_arr[lat]);
-    beacon_msg.data.push_back(coordinates_arr[lon]);
+		ROS_INFO("%s", beacon_msg.data);
+		beacon_pub.publish(beacon_msg);
 
-    ROS_INFO("%s", beacon_msg.data);
-    beacon_pub.publish(beacon_msg);
-
-    ros::spinOnce();
-    loop_rate.sleep();
-  }
-
-
-  return 0;
+		ros::spinOnce();
+		loop_rate.sleep();
+	}
+	return 0;
 }
 
