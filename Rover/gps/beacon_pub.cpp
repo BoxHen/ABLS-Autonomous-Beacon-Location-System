@@ -1,6 +1,7 @@
 #include "../rc-switch/RCSwitch.h"
 #include "std_msgs/Int32MultiArray.h"
 #include "ros/ros.h"
+#include <vector>
 #include <sstream>
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,45 +9,48 @@
 
 RCSwitch mySwitch;
 
-int get_coordinates(int argc, char *argv[]) {
-     int PIN = 29;
-     
-     if(wiringPiSetup() == -1) {
-       printf("wiringPiSetup failed, exiting...");
-       return 0;
-     }
+int* get_coordinates(int argc, char *argv[]) {
+	int lon;
+	int lat;
+	int PIN = 29;
+	int pulseLength = 0;
+	vector<int> coordinate_arr; 
 
-     int pulseLength = 0;
-     if (argv[1] != NULL) pulseLength = atoi(argv[1]);
+	if(wiringPiSetup() == -1) {
+		printf("wiringPiSetup failed, exiting...");
+		//return 0;
+	}
+	if (argv[1] != NULL) pulseLength = atoi(argv[1]);
 
-     mySwitch = RCSwitch();
-     if (pulseLength != 0) mySwitch.setPulseLength(pulseLength);
-     mySwitch.enableReceive(PIN);  // Receiver on interrupt 0 => that is pin #2
-    
-     while(1) {
-      if (mySwitch.available()) {
-        int value = mySwitch.getReceivedValue();
-	int lon; int lat;
-        if (value == 0) {
-          printf("Unknown encoding\n");
-        } else {
-	  if(value < 500000){
-	    lat = value + 42000000;
-	    printf("Lat is %i\n",lat);
-	    return lat;
-	  }
-	  else {lon = -1 * value - 75000000;
-	    printf("Lon is %i", lon);
-	    return lon;
-	  }
-	  
-        }
-        fflush(stdout);
-        mySwitch.resetAvailable();
-      }
-      usleep(100); 
-  }
-  exit(0);
+	mySwitch = RCSwitch();
+	if (pulseLength != 0) mySwitch.setPulseLength(pulseLength);
+	mySwitch.enableReceive(PIN);  // Receiver on interrupt 0 => that is pin #2
+
+	while(1) {
+		if (mySwitch.available()) {
+			int value = mySwitch.getReceivedValue();
+			if (value == 0) {
+				printf("Unknown encoding\n");
+			} 	
+			else {
+				if(value < 500000){
+					lat = value + 42000000;
+					printf("Latitude is %i\n: ",lat);
+				}
+				else {
+					lon = -1 * value - 75000000;
+					printf("Longitude is %i\n: ", lon);
+				}
+			}
+			fflush(stdout);
+			mySwitch.resetAvailable();
+		}
+		usleep(100); 
+	}
+	coordinate_arr.push_back(lat);
+	coordinate_arr.push_back(lon);
+	return coordinate_arr
+	exit(0);
 }
 
 int process_coordinates(int argc, char *argv[]) {
