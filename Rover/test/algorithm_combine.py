@@ -83,9 +83,9 @@ class Algorithm:
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", arming_flag.data)
 		self.arming_flag = arming_flag.data
 		
-		vehicle_status_array = Int16MultiArray()
-		vehicle_status_array.data = [0]
-		self.confirm_flag_pub.publish(vehicle_status_array.data)
+		vehicle_status_array = Int8MultiArray()
+		vehicle_status_array.data = [1]
+		self.confirm_flag_pub.publish(vehicle_status_array)
 
 	def get_manualCtrl(self, data):
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", data.data)

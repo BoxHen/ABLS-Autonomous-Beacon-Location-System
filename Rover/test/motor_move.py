@@ -33,12 +33,8 @@ def right(speed):
 	ser.write(convert.to_unicode(speed))
 
 def stop():
-	#ser.write(convert.to_unicode(command.RIGHT_MOTOR_BRAKE))
-	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
-	ser.write(convert.to_unicode(0))
-	#ser.write(convert.to_unicode(command.LEFT_MOTOR_BRAKE))
-	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
-	ser.write(convert.to_unicode(0))
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BRAKE))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_BRAKE))
 
 read_one_byte = 1
 msg_received = ser.read(read_one_byte)
