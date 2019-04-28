@@ -24,11 +24,11 @@ def left(speed):
 	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
 	ser.write(convert.to_unicode(speed))
 	ser.write(convert.to_unicode(command.LEFT_MOTOR_BACKWARD))
-	ser.write(convert.to_unicode(0))
+	ser.write(convert.to_unicode(speed))
 
 def right(speed):
 	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BACKWARD))
-	ser.write(convert.to_unicode(0))
+	ser.write(convert.to_unicode(speed))
 	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
 	ser.write(convert.to_unicode(speed))
 
