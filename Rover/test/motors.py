@@ -15,26 +15,26 @@ def move_rover(data):
 
 	if rover_action == "RIGHT":    
 		print("in right")
-		motor_move.stop()
-		time.sleep(0.5)
+		#motor_move.stop()
+		#time.sleep(0.5)
 		motor_move.right(faster_speed)
 
 	elif rover_action == "LEFT":  
 		print("in left")
-		motor_move.stop()
-		time.sleep(0.5)
+		#motor_move.stop()
+		#time.sleep(0.5)
 		motor_move.left(faster_speed)
 
 	elif rover_action == "FORWARD": 	
 		print("in forward")
-		motor_move.stop()
-		time.sleep(0.5)
+		#motor_move.stop()
+		#time.sleep(0.5)
 		motor_move.forward(speed)
 
 	elif rover_action == "BACKWARD":   	
 		print("in back")
-		motor_move.stop()
-		time.sleep(0.5)
+		#motor_move.stop()
+		#time.sleep(0.5)
 		motor_move.backward(speed)
 
 	elif rover_action == "forwardSteerLeft":
