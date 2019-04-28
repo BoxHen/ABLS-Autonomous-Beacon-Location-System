@@ -23,13 +23,19 @@ def backward(speed):
 def left(speed):
 	ser.write(convert.to_unicode(command.RIGHT_MOTOR_FORWARD))
 	ser.write(convert.to_unicode(speed))
-	ser.write(convert.to_unicode(command.LEFT_MOTOR_BACKWARD))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_BRAKE))
 	ser.write(convert.to_unicode(speed))
 
 def right(speed):
-	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BACKWARD))
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BRAKE))
 	ser.write(convert.to_unicode(speed))
 	ser.write(convert.to_unicode(command.LEFT_MOTOR_FORWARD))
+	ser.write(convert.to_unicode(speed))
+
+def stop(speed):
+	ser.write(convert.to_unicode(command.RIGHT_MOTOR_BRAKE))
+	ser.write(convert.to_unicode(speed))
+	ser.write(convert.to_unicode(command.LEFT_MOTOR_BRAKE))
 	ser.write(convert.to_unicode(speed))
 
 read_one_byte = 1

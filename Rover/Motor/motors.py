@@ -8,18 +8,18 @@ from std_msgs.msg import String
 
 def move_rover(data):
 	stop = 0
-	speed = 30
-	faster_speed = 40
+	speed = 45
+	faster_speed = 55
 	rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 	rover_action = data.data
 
 	if rover_action == "RIGHT":    
 		print("in right")
-		motor_move.right(speed)
+		motor_move.right(faster_speed)
 
 	elif rover_action == "LEFT":  
 		print("in left")
-		motor_move.left(speed)
+		motor_move.left(faster_speed)
 
 	elif rover_action == "FORWARD": 	
 		print("in forward")
@@ -29,11 +29,11 @@ def move_rover(data):
 		print("in back")
 		motor_move.backward(speed)
 
-	elif rover_action == "forwardSteerLeft"
+	elif rover_action == "forwardSteerLeft":
 		print("in forwardSteerLeft")
 		motor_move.forwardSteerLeft(faster_speed, speed)
 
-	elif rover_action == "forwardSteerRight"
+	elif rover_action == "forwardSteerRight":
 		print("in forwardSteerRight")
 		motor_move.forwardSteerRight(faster_speed, speed)
 
@@ -46,5 +46,13 @@ def listener():
 	rospy.Subscriber('setMotor', String, move_rover, queue_size=1)
 	rospy.spin()
 
+def stop():
+	print("motors stopped")
+	motor_move.forward(0)
+
 if __name__ == '__main__':
-	listener()
+ 	try:
+		listener()
+		rospy.on_shutdown(stop)
+	except KeyboardInterrupt:  
+		pass
