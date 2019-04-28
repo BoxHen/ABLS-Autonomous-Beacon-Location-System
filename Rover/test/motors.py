@@ -15,18 +15,26 @@ def move_rover(data):
 
 	if rover_action == "RIGHT":    
 		print("in right")
+		motor_move.stop()
+		time.sleep(0.5)
 		motor_move.right(faster_speed)
 
 	elif rover_action == "LEFT":  
 		print("in left")
+		motor_move.stop()
+		time.sleep(0.5)
 		motor_move.left(faster_speed)
 
 	elif rover_action == "FORWARD": 	
 		print("in forward")
+		motor_move.stop()
+		time.sleep(0.5)
 		motor_move.forward(speed)
 
 	elif rover_action == "BACKWARD":   	
 		print("in back")
+		motor_move.stop()
+		time.sleep(0.5)
 		motor_move.backward(speed)
 
 	elif rover_action == "forwardSteerLeft":
@@ -39,7 +47,7 @@ def move_rover(data):
 
 	else: # rover_action == "STOP"
 		print("in STOP")
-		motor_move.backward(stop)
+		motor_move.stop()
 
 def listener():
 	rospy.init_node('motor', anonymous=True)
@@ -48,7 +56,7 @@ def listener():
 
 def stop():
 	print("motors stopped")
-	motor_move.forward(0)
+	motor_move.stop()
 
 if __name__ == '__main__':
  	try:
