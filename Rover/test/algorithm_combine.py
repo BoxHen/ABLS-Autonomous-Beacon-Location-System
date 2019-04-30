@@ -83,9 +83,7 @@ class Algorithm:
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", arming_flag.data)
 		self.arming_flag = arming_flag.data
 		
-		vehicle_status_array = Int8MultiArray()
-		vehicle_status_array.data = [1]
-		self.confirm_flag_pub.publish(vehicle_status_array)
+		publish_arming_Message()
 
 	def get_manualCtrl(self, data):
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", data.data)
@@ -96,10 +94,15 @@ class Algorithm:
 		#self.Beacon_latitude = BeaconGPSArray.data[1]
 		#self.Beacon_altitude = BeaconGPSArray.data[2]
 
+	def publish_arming_Message(self):
+		vehicle_status_array = Int8MultiArray()
+		vehicle_status_array.data = [1]
+		self.confirm_flag_pub.publish(vehicle_status_array)
+
 	def calibrate_heading(self): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
 		is_calibrated = False
-		if (current_time - self.startup_time < 15):
+		if (current_time - self.startup_time > 15):
 			self.pub.publish("FORWARD")
 			is_calibrated = True
 		return is_calibrated
@@ -153,8 +156,8 @@ class Algorithm:
 	def check_beacon_location(self):
 		has_arrived = False
 		tolerance = 20
-		lat_check = self.Rover_latitude + tolerance < self.Beacon_latitude < self.Rover_latitude + tolerance
-		long_check = self.Rover_longitude + tolerance < self.Beacon_longitude < self.Rover_longitude + tolerance
+		lat_check = self.Rover_latitude - tolerance < self.Beacon_latitude < self.Rover_latitude + tolerance
+		long_check = self.Rover_longitude - tolerance < self.Beacon_longitude < self.Rover_longitude + tolerance
 		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop the rover
 			self.pub.publish("STOP")
 			has_arrived = True
