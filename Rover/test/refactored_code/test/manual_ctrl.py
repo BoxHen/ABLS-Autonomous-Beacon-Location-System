@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 import time
 import rospy
+from std_msgs.msg import Int8MultiArray
 from std_msgs.msg import Int16MultiArray
 from std_msgs.msg import String
+from std_msgs.msg import Bool
 
 class manual_ctrl:	
 	def __init__(self):

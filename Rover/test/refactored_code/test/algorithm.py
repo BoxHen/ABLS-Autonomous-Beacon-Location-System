@@ -32,7 +32,7 @@ class algorithm:
 			else:
 				if (self.beacon_finder.check_beacon_location()): #breaks from loop if we are at the beacon
 					break
-				if self.threshold_flag == 2:
+				if self.obstacle_avoid.threshold_flag == 2:
 					self.motor_command_pub.publish("BACKWARD")
 				elif self.obstacle_avoid.threshold_flag == 1:
 					command = self.obstacle_avoid.process_angle()
