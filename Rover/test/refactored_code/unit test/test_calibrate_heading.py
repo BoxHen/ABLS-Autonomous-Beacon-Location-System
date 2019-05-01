@@ -11,7 +11,7 @@ class beacon_finder:
     #print(current_time)
     #print(self.startup_time)
     is_calibrated = False
-    if (current_time - self.startup_time > 2):
+    if (current_time - self.startup_time < 2):
       print("FORWARD")
       is_calibrated = True
     
@@ -21,6 +21,7 @@ if __name__ == '__main__':
   algorithm = beacon_finder()
   while True:
     x = algorithm.calibrate_heading()
-    if (x == True):
+    print(x)
+    if (x == False):
       print("it works")
       break

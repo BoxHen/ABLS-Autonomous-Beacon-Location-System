@@ -33,15 +33,20 @@ class algorithm:
 				if (self.beacon_finder.check_beacon_location()): #breaks from loop if we are at the beacon
 					break
 				if self.obstacle_avoid.threshold_flag == 2:
+					print("in flag 2")
 					self.motor_command_pub.publish("BACKWARD")
 				elif self.obstacle_avoid.threshold_flag == 1:
+					print("in flag 1")
 					command = self.obstacle_avoid.process_angle()
 					print(command)
 					self.motor_command_pub.publish(command)
 				elif self.obstacle_avoid.threshold_flag == 0:
-					if (self.beacon_finder.calibrate_heading()): #maybe find a better way to implement this
+					print("in flag 0")
+					if (self.beacon_finder.calibrate_heading()):
+						self.motor_command_pub.publish("FORWARD")
 						continue
 					beacon_direction = self.beacon_finder.find_beacon_direction()
+					print("beacon direction is: ", beacon_direction)
 					self.motor_command_pub.publish(beacon_direction)
 			rate.sleep()
 

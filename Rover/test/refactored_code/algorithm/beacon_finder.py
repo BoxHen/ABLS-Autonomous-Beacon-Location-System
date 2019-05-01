@@ -6,7 +6,6 @@ from std_msgs.msg import Int32MultiArray
 
 class beacon_finder:
 	def __init__(self):
-		self.heading = 0
 		self.Rover_heading = 0
 		self.Rover_latitude = 0
 		self.Rover_longitude = 0
@@ -29,8 +28,8 @@ class beacon_finder:
 	def calibrate_heading(self): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
 		is_calibrated = False
-		if (current_time - self.startup_time > 15):
-			self.pub.publish("FORWARD")
+		if (current_time - self.startup_time < 15):
+			#self.pub.publish("FORWARD")
 			is_calibrated = True
 		return is_calibrated	
 
@@ -39,21 +38,26 @@ class beacon_finder:
 		latBeacon = math.radians(self.Beacon_latitude/10000000)
 		longRover = math.radians(self.Rover_longitude/10000000)
 		longBeacon = math.radians(self.Beacon_longitude/10000000)
+		print("lat rover is: ", latRover)
+		print("long rover is: ", longRover)		
+		print("lat beacon is: ", latBeacon)		
+		print("long beacon is: ", longBeacon)
 
 		X = (math.cos(latBeacon)) * (math.sin(longBeacon-longRover))
 		Y = ( (math.cos(latRover)*math.sin(latBeacon))-(math.sin(latRover)*math.cos(latBeacon)*math.cos(longBeacon-longRover)) )
-		print("X: ", X) 
-		print("Y: ", Y)
 		Bearing = math.degrees(math.atan2(X, Y))
-		print(Bearing)
+		print("Bearing is: ", Bearing)
 		return Bearing
 
 	def find_beacon_direction(self):
 		bearing = self.find_bearing()
+		print("Bearing is: ", bearing)
+		print("Rover Heading is: ", self.Rover_heading)
+		print("Rover_heading-bearing is: ", self.Rover_heading-bearing)
 		if ((self.Rover_heading-bearing)>21):
-			return "LEFT" #forwardSteerLeft
+			return "LEFT"
 		if ((self.Rover_heading-bearing)<-21):
-			return "RIGHT" #forwardSteerRight
+			return "RIGHT" 
 		else: #between -21 and 21
 			return "FORWARD"
 
