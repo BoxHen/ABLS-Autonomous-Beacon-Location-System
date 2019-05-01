@@ -4,13 +4,16 @@ import time
 import rospy
 import serial
 import convert
-import command
-import motor_move
+import hex_command_defined
 from std_msgs.msg import String
-from motor_commands import motor_commands
+
+from motor_command import motor_command
 
 class motor_controller:
-	def move_rover(data):
+	def __init__(self):
+		self.motor_command = motor_command()
+
+	def move_rover(self, data):
 		stop = 0
 		speed = 45
 		faster_speed = 55
@@ -19,40 +22,40 @@ class motor_controller:
 
 		if rover_action == "RIGHT":    
 			print("in right")
-			motor_move.right(faster_speed)
+			self.motor_command.right(faster_speed)
 
 		elif rover_action == "LEFT":  
 			print("in left")
-			motor_move.left(faster_speed)
+			self.motor_command.left(faster_speed)
 
 		elif rover_action == "FORWARD": 	
 			print("in forward")
-			motor_move.forward(speed)
+			self.motor_command.forward(speed)
 
 		elif rover_action == "BACKWARD":   	
 			print("in back")
-			motor_move.backward(speed)
+			self.motor_command.backward(speed)
 
 		elif rover_action == "forwardSteerLeft":
 			print("in forwardSteerLeft")
-			motor_move.forwardSteerLeft(faster_speed, speed)
+			self.motor_command.forwardSteerLeft(faster_speed, speed)
 
 		elif rover_action == "forwardSteerRight":
 			print("in forwardSteerRight")
-			motor_move.forwardSteerRight(faster_speed, speed)
+			self.motor_command.forwardSteerRight(faster_speed, speed)
 
 		else: # rover_action == "STOP"
 			print("in STOP")
-			motor_move.stop()
+			self.motor_command.stop()
 
-	def listener():
+	def listener(self):
 		rospy.init_node('motor', anonymous=True)
-		rospy.Subscriber('setMotor', String, move_rover, queue_size=1)
+		rospy.Subscriber('setMotor', String, self.move_rover, queue_size=1)
 		rospy.spin()
 
-	def stop_motors():
+	def stop_motors(self):
 		print("motors stopped")
-		motor_move.stop()
+		self.motor_command.stop()
 
 if __name__ == '__main__':
  	try:

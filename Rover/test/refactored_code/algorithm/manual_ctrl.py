@@ -39,9 +39,14 @@ class manual_ctrl:
 		rospy.loginfo(rospy.get_caller_id() + "I heard arming flag: %s", arming_flag.data)
 		self.arming_flag = arming_flag.data
 		
-		publish_arming_Message()
+		self.publish_arming_Message()
 
 	def publish_arming_Message(self):
-		vehicle_status_array = Int8MultiArray()
-		vehicle_status_array.data = [1]
-		self.confirm_flag_pub.publish(vehicle_status_array)
+		if (self.arming_flag ):
+			vehicle_status_array = Int8MultiArray()
+			vehicle_status_array.data = [1]
+			self.confirm_flag_pub.publish(vehicle_status_array)
+		else:
+			vehicle_status_array = Int8MultiArray()
+			vehicle_status_array.data = [0]
+			self.confirm_flag_pub.publish(vehicle_status_array)
