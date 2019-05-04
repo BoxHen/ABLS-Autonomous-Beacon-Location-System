@@ -9,7 +9,7 @@ from ultrasonic_threshold import get_threshold_flag
 class ultrasonics_on_rover():
     def __init__(self, number_of_sensors, pins):
         self.distance_pub = rospy.Publisher('isObstacle', Int16MultiArray, queue_size=1)
-	self.flag_pub = rospy.Publisher('isFlagSet', Int16, queue_size=1)
+		self.flag_pub = rospy.Publisher('isFlagSet', Int16, queue_size=1)
         rospy.init_node('ultrasonic_sensor', anonymous = True)
         self.number_of_sensors = number_of_sensors
         self.pins = pins
