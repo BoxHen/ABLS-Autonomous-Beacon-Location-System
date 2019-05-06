@@ -1,23 +1,27 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 import time
 import math
 import board
 import busio
-import adafruit_lsm303
+import Adafruit_LSM303
 
-i2c = busio.I2C(board.SCL, board.SDA)
-sensor = adafruit_lsm303.LSM303(i2c)
+lsm303 = Adafruit_LSM303.LSM303() # Create a LSM303 instance
+
+print('Printing accelerometer & magnetometer X, Y, Z axis values, press Ctrl-C to quit...')
 
 while True:
-    acc_x, acc_y, acc_z = sensor.acceleration
-    mag_x, mag_y, mag_z = sensor.magnetic
-
-    print('Acceleration (m/s^2): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(acc_x, acc_y, acc_z))
-    print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag_x, mag_y, mag_z))
-    print('')
-	heading = (math.atan2(mag_y, mag_x) * 180) / Pi;
+	accel, mag = lsm303.read()     # Read the X, Y, Z axis acceleration values and print them.
+	
+	# Grab the X, Y, Z components from the reading and print them out.
+	accel_x, accel_y, accel_z = accel
+	mag_x, mag_y, mag_z = mag
+	print('Accel X={0}, Accel Y={1}, Accel Z={2}, Mag X={3}, Mag Y={4}, Mag Z={5}'.format(accel_x, accel_y, accel_z, mag_x, mag_y, mag_z))
+   
+	heading = (math.atan2(mag_y, mag_x) * 180) / math.pi;
 	if (heading < 0): #Normalize to 0-360
 		heading = 360 + heading;
 
 	print("Compass Heading: ", heading) 
-	time.sleep(1.0)
+	
+	# Wait half a second and repeat.
+	time.sleep(0.5)
