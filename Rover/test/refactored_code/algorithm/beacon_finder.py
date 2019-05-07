@@ -22,8 +22,10 @@ class beacon_finder:
 		self.Rover_heading = RoverGPSArray.data[2]
 
 	def get_beacon_GPS(self, BeaconGPSArray):
-		self.Beacon_longitude = BeaconGPSArray.data[0]
-		self.Beacon_latitude = BeaconGPSArray.data[1]
+		self.Beacon_longitude = BeaconGPSArray.data[1]
+		self.Beacon_latitude = BeaconGPSArray.data[0]
+		print("lat: ", self.Beacon_latitude)
+		print("long: ", self.Beacon_longitude)
 
 	def calibrate_heading(self): #move forward for ~15 seccs to calibrate gps to find heading
 		current_time = time.time()
@@ -42,6 +44,8 @@ class beacon_finder:
 		print("long rover is: ", math.degrees(longRover))		
 		print("lat beacon is: ", math.degrees(latBeacon))		
 		print("long beacon is: ", math.degrees(longBeacon))
+		print("lat: ", self.Beacon_latitude)
+		print("long: ", self.Beacon_longitude)
 
 		X = (math.cos(latBeacon)) * (math.sin(longBeacon-longRover))
 		Y = ( (math.cos(latRover)*math.sin(latBeacon))-(math.sin(latRover)*math.cos(latBeacon)*math.cos(longBeacon-longRover)) )
