@@ -8,11 +8,11 @@ from std_msgs.msg import Int32MultiArray
 class beacon_finder:
 	def __init__(self):
 		self.Rover_heading = 0
-		self.Rover_latitude = 420882722
-		self.Rover_longitude = -759691631
+		self.Rover_latitude = 420880397
+		self.Rover_longitude = -759694612
 		self.startup_time = time.time()
-		self.Beacon_latitude = 420880475
-		self.Beacon_longitude = -759695050
+		self.Beacon_latitude = 420884534
+		self.Beacon_longitude = -759689006
 
 		rospy.Subscriber('rover_gps', Int32MultiArray, self.get_rover_GPS, queue_size=1)
 		rospy.Subscriber('rover_heading', Float64, self.get_rover_heading, queue_size=1)
@@ -40,16 +40,16 @@ class beacon_finder:
 		return is_calibrated	
 
 	def find_bearing(self):
-		latRover = float(math.radians(self.Rover_latitude/10000000))
-		latBeacon = math.radians(self.Beacon_latitude/10000000)
-		longRover = math.radians(self.Rover_longitude/10000000)
-		longBeacon = math.radians(self.Beacon_longitude/10000000)
-		print("lat rover is: ", self.Rover_latitude/10000000)
-		print("long rover is: ", self.Rover_longitude/10000000)		
-		print("lat beacon is: ", self.Beacon_latitude/10000000)		
-		print("long beacon is: ", self.Beacon_longitude/10000000)
+		latRover = math.radians(self.Rover_latitude/10000000.0)
+		latBeacon = math.radians(self.Beacon_latitude/10000000.0)
+		longRover = math.radians(self.Rover_longitude/10000000.0)
+		longBeacon = math.radians(self.Beacon_longitude/10000000.0)
+		print("lat rover is: ", self.Rover_latitude/10000000.0)
+		print("long rover is: ", self.Rover_longitude/10000000.0)		
+		print("lat beacon is: ", self.Beacon_latitude/10000000.0)		
+		print("long beacon is: ", self.Beacon_longitude/10000000.0)
 
-		X = float(float(math.cos(latBeacon))) * float((math.sin(longBeacon-longRover)))
+		X = (math.cos(latBeacon)) * (math.sin(longBeacon-longRover))
 		Y = ( (math.cos(latRover)*math.sin(latBeacon))-(math.sin(latRover)*math.cos(latBeacon)*math.cos(longBeacon-longRover)) )
 		Bearing = math.degrees(math.atan2(X, Y))
 		print("X is: ", X)
