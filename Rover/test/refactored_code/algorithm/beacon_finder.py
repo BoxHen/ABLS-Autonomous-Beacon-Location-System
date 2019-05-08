@@ -10,7 +10,7 @@ class beacon_finder:
 		self.Rover_heading = 0
 		self.Rover_latitude = 420880397
 		self.Rover_longitude = -759694612
-		self.startup_time = time.time()
+		#self.startup_time = time.time()
 		self.Beacon_latitude = 420884534
 		self.Beacon_longitude = -759689006
 
@@ -31,13 +31,12 @@ class beacon_finder:
 	def get_rover_heading(self, roverHeading):
 		self.Rover_heading = float(roverHeading.data)	
 
-	def calibrate_heading(self): #move forward for ~15 seccs to calibrate gps to find heading
-		current_time = time.time()
-		is_calibrated = False
-		if (current_time - self.startup_time < 1):
-			#self.pub.publish("FORWARD")
-			is_calibrated = True
-		return is_calibrated	
+	#def calibrate_heading(self): #move forward for ~15 seccs to calibrate gps to find heading
+	#	current_time = time.time()
+	#	is_calibrated = False
+	#	if (current_time - self.startup_time < 1):
+	#		is_calibrated = True
+	#	return is_calibrated	
 
 	def find_bearing(self):
 		latRover = math.radians(self.Rover_latitude/10000000.0)
@@ -76,6 +75,5 @@ class beacon_finder:
 		lat_check = self.Rover_latitude - tolerance < self.Beacon_latitude < self.Rover_latitude + tolerance
 		long_check = self.Rover_longitude - tolerance < self.Beacon_longitude < self.Rover_longitude + tolerance
 		if (lat_check and long_check): #if we are at the beacon location and within tolerance stop the rover
-			self.pub.publish("STOP")
 			has_arrived = True
 		return has_arrived
