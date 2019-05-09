@@ -65,7 +65,7 @@ int main(int argc, char **argv){
 	while (ros::ok()){
 		std_msgs::Int32MultiArray beacon_msg;
 
-		coordinates_arr = get_coordinates(argc, argv)
+		vector<int> coordinates_arr = get_coordinates(argc, argv)
 	
 		int lat = 0;
 		int lon = 1;
@@ -74,7 +74,8 @@ int main(int argc, char **argv){
 		beacon_msg.data.push_back(coordinates_arr[lat]);
 		beacon_msg.data.push_back(coordinates_arr[lon]);
 
-		ROS_INFO("%s", beacon_msg.data);
+		ROS_INFO("latitude: %d", beacon_msg.data[0]);
+		ROS_INFO("longitude: %d", beacon_msg.data[1]);
 		beacon_pub.publish(beacon_msg);
 
 		ros::spinOnce();

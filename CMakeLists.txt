@@ -201,7 +201,7 @@ include_directories(
 
 
 
-add_executable(BeaconPub Rover/gps/test/test_beacon_pub.cpp)
+add_executable(BeaconPub Rover/gps/beacon_pub.cpp)
 target_link_libraries(BeaconPub ${catkin_LIBRARIES})
 add_dependencies(BeaconPub rover_generate_messages_cpp)
 
