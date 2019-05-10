@@ -1,17 +1,12 @@
-#!/usr/bin/env python2
+#!/usr/bin/python2 
 
-import time
+import lib
 import rospy
-import serial
-import convert
-import hex_command_defined
 from std_msgs.msg import String
-
-from motor_command import motor_command
 
 class motor_controller:
 	def __init__(self):
-		self.motor_command = motor_command()
+		self.motor_command = lib.motor_command()
 
 	def move_rover(self, data):
 		stop = 0

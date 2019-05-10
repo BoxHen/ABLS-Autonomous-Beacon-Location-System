@@ -1,27 +1,17 @@
-#!/usr/bin/env python2
-import math
-import time
-import rospy
-import numpy as np
-from sensor_indexes import create_sensor_indexes
-from std_msgs.msg import Int8MultiArray
-from std_msgs.msg import Int16MultiArray
-from std_msgs.msg import Int32MultiArray
-from std_msgs.msg import String
-from std_msgs.msg import Int16
-from std_msgs.msg import Bool
+#!/usr/bin/python2 
 
-from manual_ctrl import manual_ctrl
-from beacon_finder import beacon_finder
-from obstacle_avoid import obstacle_avoid
+import rospy
+from std_msgs.msg import String
+
+import lib
 	
 class algorithm:
 	def __init__(self):
 		self.motor_command_pub = rospy.Publisher('setMotor', String, queue_size=1)
 
-		self.manual_ctrl = manual_ctrl()
-		self.beacon_finder = beacon_finder()
-		self.obstacle_avoid = obstacle_avoid()
+		self.manual_ctrl = lib.manual_ctrl()
+		self.beacon_finder = lib.beacon_finder()
+		self.obstacle_avoid = lib.obstacle_avoid()
 
 	def run_algorithm(self): 
 		rate = rospy.Rate(10)

@@ -1,4 +1,5 @@
-#!/usr/bin/env python2
+#!/usr/bin/python2 
+
 import time
 import rospy
 from std_msgs.msg import Int8MultiArray

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/python2 
 
 def get_threshold_flag(argv):
 	threshold = 30

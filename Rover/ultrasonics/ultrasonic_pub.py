@@ -1,10 +1,9 @@
-#!/usr/bin/env/ python2
+#!/usr/bin/python2    
+
+import lib
 import rospy
-import time
 from std_msgs.msg import Int16
 from std_msgs.msg import Int16MultiArray 
-from ultrasonic_sensor import ultrasonic_sensor
-from ultrasonic_threshold import get_threshold_flag
 
 class ultrasonics_on_rover():
     def __init__(self, number_of_sensors, pins):
@@ -24,7 +23,7 @@ class ultrasonics_on_rover():
         #add parameter check in case
         for i in range(self.number_of_sensors):
             while j < length-1: 
-                self.sensors.append(ultrasonic_sensor(pins[j], pins[j+1]))
+                self.sensors.append(lib.ultrasonic_sensor(pins[j], pins[j+1]))
                 j += 2
 
     def get_distance(self):
@@ -33,7 +32,7 @@ class ultrasonics_on_rover():
             self.distances.data.append(self.sensors[i].distance_from_obj())
 
     def check_sensor_boundaries(self):
-        self.threshold_flag = get_threshold_flag(self.distances.data)
+        self.threshold_flag = lib.get_threshold_flag(self.distances.data)
 
     def run_sensors(self):
         self.create_sensors()

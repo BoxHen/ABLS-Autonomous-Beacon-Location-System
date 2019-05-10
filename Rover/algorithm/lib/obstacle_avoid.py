@@ -1,4 +1,5 @@
-#!/usr/bin/env python2
+#!/usr/bin/python2 
+
 import math
 import time
 import rospy
@@ -33,7 +34,7 @@ class obstacle_avoid:
 		rospy.loginfo(rospy.get_caller_id() + "I heard FLAG: %s", data.data)
 		self.threshold_flag = data.data
 
-	def process_angle(self):
+	def process_angle(self):	
 		print("rebound angle in degrees: ", self.rebound_angle_degrees)
 		if self.rebound_angle_degrees > 0:
 			command = "RIGHT"

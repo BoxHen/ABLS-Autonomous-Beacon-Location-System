@@ -1,0 +1,14 @@
+<launch>
+
+	<node pkg="rover" type="heading_py_3.py" name="a_compass_heading_py3"  />
+
+	<node pkg="rover" type="heading_py_2.py" name="b_compass_heading_py2"  />
+
+	<node pkg="rover" type="ultrasonic_pub.py" name="c_ultrasonic_sensor"  />
+	
+	<node pkg="rover" type="algorithm.py" name="d_algorithm"  />
+
+	<node pkg="rover" type="motor_controller.py" name="e_motors"  />
+
+
+</launch>
