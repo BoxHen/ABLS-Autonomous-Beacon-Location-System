@@ -20,9 +20,9 @@ class manual_ctrl:
 	def get_command(self):
 		command = "FORWARD"
 		if (self.manual_command == "LEFT"):
-			command = "LEFT"
+			command = "forwardSteerLeft"
 		elif (self.manual_command ==  "RIGHT"):
-			command = "RIGHT"
+			command = "forwardSteerRight"
 		elif (self.manual_command == "FORWARD"):
 			command = "FORWARD"
 		elif (self.manual_command == "BACKWARD"):

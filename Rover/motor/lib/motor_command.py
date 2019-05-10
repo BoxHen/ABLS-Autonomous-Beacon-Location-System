@@ -34,6 +34,18 @@ class motor_command:
 		self.ser.write(convert.to_unicode(hex_command_defined.LEFT_MOTOR_FORWARD))
 		self.ser.write(convert.to_unicode(speed))
 
+	def forwardSteerLeft(self, faster_speed, speed):
+		self.ser.write(convert.to_unicode(hex_command_defined.RIGHT_MOTOR_FORWARD))
+		self.ser.write(convert.to_unicode(faster_speed))
+		self.ser.write(convert.to_unicode(hex_command_defined.LEFT_MOTOR_BACKWARD))
+		self.ser.write(convert.to_unicode(speed))
+
+	def forwardSteerRight(self, faster_speed, speed):
+		self.ser.write(convert.to_unicode(hex_command_defined.RIGHT_MOTOR_BACKWARD))
+		self.ser.write(convert.to_unicode(speed))
+		self.ser.write(convert.to_unicode(hex_command_defined.LEFT_MOTOR_FORWARD))
+		self.ser.write(convert.to_unicode(faster_speed))
+
 	def stop(self):
 		self.ser.write(convert.to_unicode(hex_command_defined.RIGHT_MOTOR_BRAKE))
 		self.ser.write(convert.to_unicode(hex_command_defined.LEFT_MOTOR_BRAKE))
