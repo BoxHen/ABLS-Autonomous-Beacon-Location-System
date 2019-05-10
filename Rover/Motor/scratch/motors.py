@@ -39,7 +39,7 @@ def move_rover(data):
 
 	else: # rover_action == "STOP"
 		print("in STOP")
-		motor_move.backward(stop)
+		motor_move.stop()
 
 def listener():
 	rospy.init_node('motor', anonymous=True)
@@ -48,7 +48,7 @@ def listener():
 
 def stop():
 	print("motors stopped")
-	motor_move.forward(0)
+	motor_move.stop()
 
 if __name__ == '__main__':
  	try:

@@ -1,45 +1,58 @@
-#!/usr/bin/env python2
-
+#!/usr/bin/env/ python2
 import rospy
 import time
-import RPi.GPIO as GPIO
-GPIO.setmode (GPIO.BCM)
-from ultrasonic_sensor import Distance
-from ultrasonic_threshold import get_threshold_flag
-from std_msgs.msg import Int16MultiArray 
 from std_msgs.msg import Int16
+from std_msgs.msg import Int16MultiArray 
+from ultrasonic_sensor import ultrasonic_sensor
+from ultrasonic_threshold import get_threshold_flag
 
-def ultrasonic_sensor():
-	distance_pub = rospy.Publisher('isObstacle', Int16MultiArray, queue_size=1)
-	flag_pub = rospy.Publisher('isFlagSet', Int16, queue_size=1)
-	rospy.init_node('ultrasonic_sensor', anonymous = True) # Initializing the node
+class ultrasonics_on_rover():
+    def __init__(self, number_of_sensors, pins):
+        self.distance_pub = rospy.Publisher('isObstacle', Int16MultiArray, queue_size=1)
+	self.flag_pub = rospy.Publisher('isFlagSet', Int16, queue_size=1)
+        rospy.init_node('ultrasonic_sensor', anonymous = True)
+        self.number_of_sensors = number_of_sensors
+        self.pins = pins
+        self.sensors = []
+        self.distances = Int16MultiArray()
+        self.threshold_flag = 0
+        
 
-	sensor_1 = Distance(2, 3)
-	sensor_2 = Distance(4, 17)
-	sensor_3 = Distance(27, 22)
-	sensor_4 = Distance(10, 9)
+    def create_sensors(self):
+        j = 0
+        length = len(self.pins) 
+        #add parameter check in case
+        for i in range(self.number_of_sensors):
+            while j < length-1: 
+                self.sensors.append(ultrasonic_sensor(pins[j], pins[j+1]))
+                j += 2
 
-	rate = rospy.Rate(10)
-	while not rospy.is_shutdown():
-		reading_1 = sensor_1.distance_from_obj()
-		reading_2 = sensor_2.distance_from_obj()
-		reading_3 = sensor_3.distance_from_obj()
-		reading_4 = sensor_4.distance_from_obj()
+    def get_distance(self):
+	self.distances = Int16MultiArray()
+        for i in range(self.number_of_sensors):
+            self.distances.data.append(self.sensors[i].distance_from_obj())
 
-		threshold_flag = get_threshold_flag(reading_1, reading_2, reading_3, reading_4)
+    def check_sensor_boundaries(self):
+        self.threshold_flag = get_threshold_flag(self.distances.data)
 
-		sensor_reading_array = Int16MultiArray()
-		sensor_reading_array.data = [reading_1, reading_2, reading_3, reading_4]
+    def run_sensors(self):
+        self.create_sensors()
+	rate = rospy.Rate(1)
+        while not rospy.is_shutdown():
+            self.get_distance()
+            self.check_sensor_boundaries()
 
-		distance_pub.publish(sensor_reading_array)
-		flag_pub.publish(threshold_flag)
-		print("sensor:", sensor_reading_array.data)
-		print("flags:", threshold_flag)
-		
-		rate.sleep()
+            self.distance_pub.publish(self.distances)
+            self.flag_pub.publish(self.threshold_flag)
+            print("sensor:", self.distances.data)
+            print("flags:", self.threshold_flag)
+            rate.sleep()
 
 if __name__ == '__main__':
-    try:
-	ultrasonic_sensor()
-    except rospy.ROSInterruptException:
-        pass
+	#rospy.init_node('algorithm', anonymous=True)
+ 	try:
+        	pins = [10,9,11,5,6, 13,19,26]
+		ultrasonics_on_rover = ultrasonics_on_rover(4, pins)
+		ultrasonics_on_rover.run_sensors()
+	except rospy.ROSInterruptException:  
+		pass

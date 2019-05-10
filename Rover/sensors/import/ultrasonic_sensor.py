@@ -4,7 +4,7 @@ import time
 import RPi.GPIO as GPIO
 GPIO.setmode (GPIO.BCM)
 
-class Distance:
+class ultrasonic_sensor:
 	#set time vars
 	#Start_time = time.time()
 	#Stop_time = time.time()	
