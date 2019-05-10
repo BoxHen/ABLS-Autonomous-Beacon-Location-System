@@ -11,7 +11,7 @@ class motor_controller:
 	def move_rover(self, data):
 		stop = 0
 		speed = 45
-		faster_speed = 40
+		faster_speed = 85
 		rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 		rover_action = data.data
 
